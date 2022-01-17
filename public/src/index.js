@@ -28,11 +28,11 @@ async function waitForData() {
   let x = await window.data;
 }
 
-var timeout = 1000000; // 1000000ms = 1000 seconds
+let timeout = 1000000; // 1000000ms = 1000 seconds
 
 // This is the promise code, so this is the useful bit
 function ensureDataIsFetched(timeout) {
-  var start = Date.now();
+  let start = Date.now();
   return new Promise(waitForData); // set the promise object within the ensureFooIsSet object
 
   // waitForFoo makes the decision whether the condition is met
@@ -66,44 +66,52 @@ function start() {
 }
 
 function setupBlocks() {
-  for (var i = 0; i < window.data.length; i++) {
-    var block = $("<div class='blocks-card'></div>");
-    var blockImg = $("<img/>");
-    var blockText = $("<p></p>");
+  for (let i = 0; i < window.data.length; i++) {
+    let blockWarper = $("<div class='block-warper absolute-center'></div>");
+    let block = $("<div class='blocks-card flexbox-two-column'></div>");
+    let blockImg = $("<img/>");
+    let blockText = $("<p></p>");
 
     //setup block img
-    var imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
+    let imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
     blockImg.attr("src", imgSrc);
     blockImg.attr("alt", window.data[i].img.alt);
 
     //setup block text
     blockText.text(window.data[i].name);
 
-    //TODO: add on click listener
+    //add on click listener
     block.on("click", { blockId: i }, createBlockMenu);
 
     //append
     block.append(blockImg, blockText);
-    $(".blocks-container").append(block);
+    blockWarper.append(block);
+    $(".blocks-container").append(blockWarper);
   }
 }
 
 function createBlockMenu(e) {
-  var id = e.data.blockId;
+  let id = e.data.blockId;
 
-  var background = $('<div class="menu--background absolute-center"></div>');
-  var menu = $('<div class="menu--body"></div>');
-  var title = $(`<p class="menu--body--title">${window.data[id].name}</p>`);
-  var seperator = $(`<div class="menu--body-seperator"></div>`);
-  var videoBlockContainer = $(
+  let exitButton = $(`<div class="menu--body-exit-button"></div>`);
+  let background = $('<div class="menu--background absolute-center"></div>');
+  let menu = $('<div class="menu--body"></div>');
+  let title = $(`<p class="menu--body--title">${window.data[id].name}</p>`);
+  let seperator = $(`<div class="menu--body-seperator"></div>`);
+  let videoBlockContainer = $(
     `<div class="menu--body--video-block-container"></div>`
   );
 
-  var videoBlock, img, text, imgSrc;
-  
+  //exitbutton
+  exitButton.on("click", deleteBlockMenu);
+
+  let videoBlock, img, text, imgSrc, videoBlockWarper;
+
   for (let i = 0; i < window.data[id].urls.length; i++) {
+    // imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
     imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
 
+    videoBlockWarper = $("<div class='block-warper absolute-center'></div>");
     videoBlock = $(`<div class="menu--body--video-block"></div>`);
     img = $(`<img 
       src="${imgSrc}"
@@ -111,12 +119,48 @@ function createBlockMenu(e) {
       "/>`);
     text = $(`<p>${window.data[id].urls[i].title}</P>`);
 
+    //onclick of video block
+    videoBlock.on("click", { blockId: id, videoId: i }, createVideoMenu);
+
     videoBlock.append(img, text);
-    videoBlockContainer.append(videoBlock);
+    videoBlockWarper.append(videoBlock);
+    videoBlockContainer.append(videoBlockWarper);
   }
 
   //append
-  menu.append(title, seperator, videoBlockContainer);
+  menu.append(title, seperator, videoBlockContainer, exitButton);
+  background.append(menu);
+  $("body").append(background);
+}
+
+function deleteBlockMenu() {
+  $(this).parent().parent().remove();
+}
+
+function createVideoMenu(e) {
+  let blockId = e.data.blockId;
+  let videoId = e.data.videoId;
+  console.log(blockId);
+  console.log(videoId);
+
+  let exitButton = $(`<div class="menu--body-exit-button"></div>`);
+  let background = $('<div class="menu--background absolute-center"></div>');
+  let menu = $('<div class="menu-video--body"></div>');
+  let title = $(
+    `<p class="menu-video--body--title">${window.data[blockId].urls[videoId].title}</p>`
+  );
+  let seperator = $(`<div class="menu-video--body-seperator"></div>`);
+  let video = $(
+    `<iframe class="" src="${window.data[blockId].urls[videoId].url}" width="640" height="480" allow="autoplay"></iframe>`
+  );
+  let wraper = $(
+    `<div class="absolute-center menu-video--body-wrapper"></div>`
+  );
+  //exitbutton
+  exitButton.on("click", deleteBlockMenu);
+  wraper.append(video);
+  //append
+  menu.append(exitButton, title, seperator, wraper);
   background.append(menu);
   $("body").append(background);
 }

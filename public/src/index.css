@@ -48,6 +48,10 @@ p {
   width: 90%;
 }
 
+.block-warper {
+  flex-basis: 50%;
+}
+
 .blocks-card {
   position: relative;
   display: flex;
@@ -74,7 +78,7 @@ p {
   font-weight: bold;
   width: 100%;
   text-align: center;
-  bottom: .3rem;
+  bottom: 0.3rem;
 }
 
 .blocks-card:hover {
@@ -113,26 +117,26 @@ p {
 .cta img {
   height: 90%;
   opacity: 1;
-  transition: opacity 0.5s
+  transition: opacity 0.5s;
 }
 
 .cta:hover img {
   opacity: 0;
-  transition: opacity 0.5s
+  transition: opacity 0.5s;
 }
 
 .cta .button-text {
   opacity: 0;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
   position: absolute;
   width: 100%;
   left: 0;
   font-size: 1.5rem;
- }
+}
 
 .cta:hover .button-text {
   opacity: 1;
-  transition: opacity 0.5s
+  transition: opacity 0.5s;
 }
 
 /* logos */
@@ -167,13 +171,15 @@ p {
 }
 
 .menu--body {
+  position: relative;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   align-content: flex-start;
   width: 80%;
   height: 80%;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   background: white;
 }
@@ -197,7 +203,7 @@ p {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  width: 80%;
+  width: 64vw;
   row-gap: 0.5rem;
   position: relative;
 }
@@ -221,11 +227,58 @@ p {
   margin-top: 0.5rem;
 }
 
-.menu--body--video-block  p {
+.menu--body--video-block p {
   position: absolute;
   bottom: 0.1rem;
   width: 100%;
   text-align: center;
+}
+
+.menu--body-exit-button {
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: black;
+}
+
+/* video menu */
+.menu-video--body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 80%;
+  height: 50%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background: white;
+}
+
+.menu-video--body iframe {
+  width: 95%;
+  height: auto;
+}
+
+.menu-video--body-wrapper {
+  height: 80%;
+}
+
+.menu-video--body--title {
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.menu-video--body-seperator {
+  height: 1px;
+  width: 80%;
+  border-radius: 100px;
+  background: black;
 }
 
 /* general stuff */
