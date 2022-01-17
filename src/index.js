@@ -79,7 +79,7 @@ function setupBlocks() {
     //setup block text
     blockText.text(window.data[i].name);
 
-    //TODO: add on click listener
+    //add on click listener
     block.on("click", { blockId: i }, createBlockMenu);
 
     //append
@@ -106,6 +106,7 @@ function createBlockMenu(e) {
   var videoBlock, img, text, imgSrc;
 
   for (let i = 0; i < window.data[id].urls.length; i++) {
+    // imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
     imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
 
     videoBlock = $(`<div class="menu--body--video-block"></div>`);
