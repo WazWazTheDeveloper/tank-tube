@@ -48,6 +48,10 @@ p {
   width: 90%;
 }
 
+.block-warper {
+  flex-basis: 50%;
+}
+
 .blocks-card {
   position: relative;
   display: flex;
