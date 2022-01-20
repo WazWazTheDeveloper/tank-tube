@@ -296,7 +296,7 @@ function updateData(blockId, videoId, title, imgSrc, imgAlt, videoUrl) {
     data = window.data[blockId].urls;
   }else if (videoId === -2) {
     dir = `blocks/${blockId}/`;
-    data = window.data[blockId];v
+    data = window.data[blockId];
   } else {
     window.data[blockId].urls[videoId].url = videoUrl;
     window.data[blockId].urls[videoId].img.src = imgSrc;
