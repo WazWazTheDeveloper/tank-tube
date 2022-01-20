@@ -6,6 +6,8 @@ import {
   get,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
+
+
 function getData() {
   // Get a reference to the database service
   const database = getDatabase(app);
@@ -78,7 +80,7 @@ function setupBlocks() {
     blockImg.attr("alt", window.data[i].img.alt);
 
     //setup block text
-    blockText.text(window.data[i].name);
+    blockText.text(window.data[i].title);
 
     //add on click listener
     block.on("click", { blockId: i }, createBlockMenu);
@@ -96,7 +98,7 @@ function createBlockMenu(e) {
   let exitButton = $(`<div class="menu--body-exit-button"></div>`);
   let background = $('<div class="menu--background absolute-center"></div>');
   let menu = $('<div class="menu--body"></div>');
-  let title = $(`<p class="menu--body--title">${window.data[id].name}</p>`);
+  let title = $(`<p class="menu--body--title">${window.data[id].title}</p>`);
   let seperator = $(`<div class="menu--body-seperator"></div>`);
   let videoBlockContainer = $(
     `<div class="menu--body--video-block-container"></div>`
