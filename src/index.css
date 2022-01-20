@@ -219,6 +219,7 @@ p {
   border: solid 0.1rem black;
   border-radius: 5px;
   overflow: hidden;
+  position: relative;
 }
 
 .menu--body--video-block img {
@@ -278,6 +279,69 @@ p {
   height: 1px;
   width: 80%;
   border-radius: 100px;
+  background: black;
+}
+
+/* edit menu */
+.menu-edit--body-wrapper {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 80%;
+  height: 50%;
+  overflow-y: auto;
+  overflow-x: auto;
+  row-gap: 1rem;
+
+  background: white;
+}
+
+.menu-edit--body-tile {
+  display: flex;
+  width: 100%;
+}
+
+.menu-edit--body-tile p {
+  width: 20%;
+}
+
+.menu-edit--body-tile input{
+  width: 70%;
+  overflow: hidden;
+}
+
+.menu-edit--body-submit-button {
+  position: absolute;
+  bottom: 2rem;
+}
+
+
+.menu--body-edit-button {
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: black;
+}
+
+.menu--body-add-button {
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  top: 0.5rem;
+  left: 2.5rem;
+  background: black;
+}
+
+.menu--body-delete-button {
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
   background: black;
 }
 

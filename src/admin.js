@@ -4,9 +4,9 @@ import {
   ref,
   child,
   get,
+  set,
+  push,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-
-
 
 function getData() {
   // Get a reference to the database service
@@ -96,6 +96,8 @@ function createBlockMenu(e) {
   let id = e.data.blockId;
 
   let exitButton = $(`<div class="menu--body-exit-button"></div>`);
+  let editButton = $(`<div class="menu--body-edit-button"></div>`);
+  let addButton = $(`<div class="menu--body-add-button"></div>`);
   let background = $('<div class="menu--background absolute-center"></div>');
   let menu = $('<div class="menu--body"></div>');
   let title = $(`<p class="menu--body--title">${window.data[id].title}</p>`);
@@ -107,11 +109,21 @@ function createBlockMenu(e) {
   //exitbutton
   exitButton.on("click", deleteBlockMenu);
 
+  //editButton
+  editButton.on("click", { blockId: id, videoId: -1 }, createEditMenu);
+
+  //addButton
+  addButton.on(
+    "click",
+    { blockId: id, videoId: window.data[id].urls.length },
+    createEditMenu
+  );
+
   let videoBlock, img, text, imgSrc, videoBlockWarper;
 
   for (let i = 0; i < window.data[id].urls.length; i++) {
     // imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
-    imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
+    imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[id].urls[i].img.src}`;
 
     videoBlockWarper = $("<div class='block-warper absolute-center'></div>");
     videoBlock = $(`<div class="menu--body--video-block"></div>`);
@@ -122,7 +134,7 @@ function createBlockMenu(e) {
     text = $(`<p>${window.data[id].urls[i].title}</P>`);
 
     //onclick of video block
-    videoBlock.on("click", { blockId: id, videoId: i }, createVideoMenu);
+    videoBlock.on("click", { blockId: id, videoId: i }, createEditMenu);
 
     videoBlock.append(img, text);
     videoBlockWarper.append(videoBlock);
@@ -130,7 +142,14 @@ function createBlockMenu(e) {
   }
 
   //append
-  menu.append(title, seperator, videoBlockContainer, exitButton);
+  menu.append(
+    title,
+    seperator,
+    videoBlockContainer,
+    exitButton,
+    editButton,
+    addButton
+  );
   background.append(menu);
   $("body").append(background);
 }
@@ -139,30 +158,155 @@ function deleteBlockMenu() {
   $(this).parent().parent().remove();
 }
 
-function createVideoMenu(e) {
+function createEditMenu(e) {
   let blockId = e.data.blockId;
   let videoId = e.data.videoId;
-  console.log(blockId);
-  console.log(videoId);
 
+  //ref to data
+  let _data;
+  if (videoId == -1) {
+    _data = window.data[blockId];
+  } else if (videoId == window.data[blockId].urls.length) {
+    _data = {
+      title: "",
+      img: {
+        src: "",
+        alt: "",
+      },
+      url: "",
+    };
+  } else {
+    _data = window.data[blockId].urls[videoId];
+  }
+
+  let deleteButton = $(`<div class="menu--body-delete-button"></div>`);
   let exitButton = $(`<div class="menu--body-exit-button"></div>`);
   let background = $('<div class="menu--background absolute-center"></div>');
   let menu = $('<div class="menu-video--body"></div>');
-  let title = $(
-    `<p class="menu-video--body--title">${window.data[blockId].urls[videoId].title}</p>`
-  );
+  let title = $(`<p class="menu-video--body--title">${_data.title}</p>`);
   let seperator = $(`<div class="menu-video--body-seperator"></div>`);
-  let video = $(
-    `<iframe class="" src="${window.data[blockId].urls[videoId].url}" width="640" height="480" allow="autoplay"></iframe>`
+  let wraper = $(`<ul class="menu-edit--body-wrapper"></ul>`);
+  let titleTile = $(
+    `<li class="menu-edit--body-tile">
+        <p>titles</p>
+        <input 
+        type="text" 
+        id="title"
+        value="${_data.title}">
+    </li>`
   );
-  let wraper = $(
-    `<div class="absolute-center menu-video--body-wrapper"></div>`
+  let imgSrcTile = $(
+    `<li class="menu-edit--body-tile">
+        <p>img src</p>
+        <input 
+        type="text" 
+        id="img-src"
+        value="${_data.img.src}">
+    </li>`
   );
+  let imgAltTile = $(
+    `<li class="menu-edit--body-tile">
+        <p>img alt</p>
+        <input 
+        type="text" 
+        id="img-alt"
+        value="${_data.img.alt}">
+    </li>`
+  );
+  let videoUrlTile =
+    videoId == -1
+      ? $("<div></div>")
+      : $(`<li class="menu-edit--body-tile">
+        <p>video url</p>
+        <input 
+        type="text" 
+        id="video-url"
+        value="${_data.url}">
+    </li>`);
+
+  let submitButton = $(
+    `<button class="menu-edit--body-submit-button">save</button>`
+  );
+
   //exitbutton
   exitButton.on("click", deleteBlockMenu);
-  wraper.append(video);
+
+  //editButton
+  deleteButton.on("click", { blockId: blockId, videoId: videoId }, removeBlock);
+
+  //sumbitbutton
+  submitButton.on(
+    "click",
+    { blockId: blockId, videoId: videoId },
+    onSubmitChanges
+  );
+
   //append
-  menu.append(exitButton, title, seperator, wraper);
+  wraper.append(titleTile, imgSrcTile, imgAltTile, videoUrlTile);
+  menu.append(exitButton, title, seperator, wraper, submitButton, deleteButton);
   background.append(menu);
   $("body").append(background);
+}
+
+function removeBlock(e) {
+  let blockId = parseInt(e.data.blockId);
+  let videoId = parseInt(e.data.videoId);
+
+  if (videoId > -1) {
+    window.data[blockId].urls.splice(videoId, 1);
+  }
+
+  updateData(blockId, -2);
+  $(this).parent().parent().remove();
+}
+
+function onSubmitChanges(e) {
+  let blockId = parseInt(e.data.blockId);
+  let videoId = parseInt(e.data.videoId);
+  let title = $("#title").val();
+  let imgSrc = $("#img-src").val();
+  let imgAlt = $("#img-alt").val();
+  let videoUrl = $("#video-url").val();
+
+  updateData(blockId, videoId, title, imgSrc, imgAlt, videoUrl);
+  $(this).parent().parent().remove();
+}
+
+function updateData(blockId, videoId, title, imgSrc, imgAlt, videoUrl) {
+  let dir, data;
+
+  if (videoId === -1) {
+    window.data[blockId].img.src = imgSrc;
+    window.data[blockId].img.alt = imgAlt;
+    window.data[blockId].title = title;
+
+    dir = `blocks/${blockId}/`;
+    data = window.data[blockId];
+  } else if (videoId == window.data[blockId].urls.length) {
+    let newData = {
+      title: title,
+      img: {
+        src: imgSrc,
+        alt: imgAlt,
+      },
+      url: videoUrl,
+    };
+    window.data[blockId].urls.push(newData);
+    dir = `blocks/${blockId}/urls/`;
+    data = window.data[blockId].urls;
+  }else if (videoId === -2) {
+    dir = `blocks/${blockId}/`;
+    data = window.data[blockId];
+  } else {
+    window.data[blockId].urls[videoId].url = videoUrl;
+    window.data[blockId].urls[videoId].img.src = imgSrc;
+    window.data[blockId].urls[videoId].img.alt = imgAlt;
+    window.data[blockId].urls[videoId].title = title;
+
+    dir = `blocks/${blockId}/urls/`;
+    data = window.data[blockId].urls;
+  }
+
+  const db = getDatabase();
+  set(ref(db, dir), data);
 }
