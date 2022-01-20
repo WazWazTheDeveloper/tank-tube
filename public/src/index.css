@@ -241,7 +241,8 @@ p {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background: black;
+  background: url(https://drive.google.com/uc?export=view&id=1bBEYnmEI2gT8a4L2Pr6wp06Us_U9yIeQ);
+  border: 1px solid black;
 }
 
 /* video menu */
@@ -324,7 +325,8 @@ p {
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-  background: black;
+  background: url(https://drive.google.com/uc?export=view&id=1ejW8Zugq6MAdOWQWKJynH_booRUgIL-Z);
+  border: black solid 1px;
 }
 
 .menu--body-add-button {
@@ -333,7 +335,8 @@ p {
   position: absolute;
   top: 0.5rem;
   left: 2.5rem;
-  background: black;
+  background: url(https://drive.google.com/uc?export=view&id=1zqFU55dw5TfKHID7aCJFWsb0NANI8fmr);
+  border: black solid 1px;
 }
 
 .menu--body-delete-button {
@@ -342,7 +345,8 @@ p {
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-  background: black;
+  background: url(https://drive.google.com/uc?export=view&id=178A4zX0Qz-q3DW55GtegNwjM-VjTayZc);
+  border: black solid 1px;
 }
 
 /* general stuff */
