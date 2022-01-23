@@ -111,7 +111,7 @@ function createBlockMenu(e) {
 
   for (let i = 0; i < window.data[id].urls.length; i++) {
     // imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
-    imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[i].img.src}`;
+    imgSrc = `https://drive.google.com/uc?export=view&id=${window.data[id].urls[i].img.src}`;
 
     videoBlockWarper = $("<div class='block-warper absolute-center'></div>");
     videoBlock = $(`<div class="menu--body--video-block"></div>`);
