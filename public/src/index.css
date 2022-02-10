@@ -223,9 +223,10 @@ p {
 }
 
 .menu--body--video-block img {
-  height: 6rem;
   width: auto;
+  height: 4rem;
   margin-top: 0.5rem;
+  margin-top: 2rem;
 }
 
 .menu--body--video-block p {
