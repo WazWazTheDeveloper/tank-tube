@@ -50,6 +50,7 @@ function ensureDataIsFetched(timeout) {
 
 // This runs the promise code
 ensureDataIsFetched(timeout).then(function () {
+  correctData();
   start();
   console.log("sad");
 });
@@ -60,6 +61,15 @@ $(function () {
   //wait for data
   waitForData();
 });
+
+function correctData() {
+  for (let i = 0; i < window.data.length; i++) {
+    const element = window.data[i];
+    if(element.urls === undefined){
+      element.urls = [];
+    }
+  }
+}
 
 function start() {
   console.log(window.data); //TODO delete this

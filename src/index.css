@@ -14,6 +14,8 @@ body {
   background: url(../assets/background.png);
   background-size: 100vw auto;
   background-repeat: repeat-y;
+  font-family: "Assistant";
+  font-weight: bold;
 }
 
 p {
